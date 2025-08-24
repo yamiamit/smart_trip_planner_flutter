@@ -11,7 +11,9 @@ class TripRepo {
   /// Generate a new trip using AI and store it locally
   Future<Trip> createTrip(String prompt) async {
     // 1. Call AI to generate trip
-    final trip = await agent.generateTrip(prompt);
+    final trip = await agent.generateTrip(userPrompt: prompt);
+
+    //generateTrip(prompt);
 
     // 2. Save to Isar
     await isar.writeTxn(() async {

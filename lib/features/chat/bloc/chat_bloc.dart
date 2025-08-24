@@ -18,11 +18,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ) async {
     emit(ChatLoading());
     try {
-      final rawResponse = await agent.fetchTripPlan(event.prompt);
-      final jsonMap = jsonDecode(rawResponse);
-      final trip = Trip.fromJson(jsonMap);
+      final rawResponse = await agent.generateTrip(userPrompt: event.prompt);    //fetchTripPlan(event.prompt)
+      // final jsonMap = jsonDecode(rawResponse);
+      // final trip = Trip.fromJson(jsonMap);
       //print(trip);
-      emit(ChatLoaded(trip));
+      emit(ChatLoaded(rawResponse));
     } catch (e) {
       emit(ChatError("Failed to fetch or parse trip: $e"));
       print(e);

@@ -21,7 +21,7 @@ Future<void> main() async {
   await dotenv.load(fileName: '.env');
   Env.initFromDotenv();
 
-
+  //this step helps getting directory of user generated files
   final dir = await getApplicationDocumentsDirectory();
   isar = await Isar.open([TripSchema], directory: dir.path);
 
