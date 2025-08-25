@@ -4,28 +4,6 @@ Smart trip planner for future.
 
 
 ## Architecture
-```mermaid
-flowchart TD
-    U[User Prompt\n+ Itinerary + Chat History] --> LLM[LLM Receives Context & Functions]
-
-    LLM -->|Needs Info?| F[Function Calls\n(weather, attractions, etc.)]
-    F --> D[External Data Sources]
-    D --> F --> LLM
-
-    LLM --> J[Generate Updated Itinerary JSON]
-    J --> V[Validation & Conversion to Trip Model]
-    V --> U[Final Itinerary Returned to User]
-
-
-    U --> A
-    A --> L
-    L --> A
-    A --> Tools
-    Tools --> V
-    V --> A
-    A --> U
-
-
 
 
 
