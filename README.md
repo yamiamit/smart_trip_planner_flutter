@@ -2,15 +2,55 @@
 
 Smart trip planner for future.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Architecture
+```mermaid
+flowchart TD
+    U[User Prompt\n+ Itinerary + Chat History] --> LLM[LLM Receives Context & Functions]
 
-A few resources to get you started if this is your first Flutter project:
+    LLM -->|Needs Info?| F[Function Calls\n(weather, attractions, etc.)]
+    F --> D[External Data Sources]
+    D --> F --> LLM
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+    LLM --> J[Generate Updated Itinerary JSON]
+    J --> V[Validation & Conversion to Trip Model]
+    V --> U[Final Itinerary Returned to User]
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+    U --> A
+    A --> L
+    L --> A
+    A --> Tools
+    Tools --> V
+    V --> A
+    A --> U
+
+
+
+
+
+## ⚙️ Setup Guide
+
+### Backend Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yamiamit/smart_trip_planner_flutter
+   flutter pub get
+   flutter run
+   ```
+2. Create .env file in the root directory with these variables:
+
+   ```bash
+   GEMINI_API_KEY : 
+   //provide your gemini api key
+   
+   ```
+3. Register your app on firebase console to obtain google-services.json file
+   ```bash
+   put the obtained .json file /android/app directory
+
+NOTE: You need to provide SHA1 key to enable google sign in so please refer documentary or net for that
+
+## 📜 License
+
