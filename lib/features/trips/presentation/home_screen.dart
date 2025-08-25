@@ -1,7 +1,8 @@
-// Import for ChatBloc
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isar/isar.dart';
+import 'package:smart_trip_planner/screens/profile/profile.dart';
 import '../../trips/data/trip_repo.dart';
 import '../../trips/data/trip.dart';
 import '../../chat/presentation/chat_screen.dart';
@@ -11,7 +12,8 @@ import 'itinery_view.dart';
 
 class HomeScreen extends StatefulWidget {
   final String name;
-  const HomeScreen({super.key,required this.name});
+  final String? email;//this can be null so dont be surprised if it shows error
+  const HomeScreen({super.key,required this.name,this.email});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -80,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _createItinerary() {
     if (_visionController.text.trim().isNotEmpty) {
       final visionText = _visionController.text.trim();
-      // Navigate to chat screen and automatically submit the vision text
+      // after submitting the vision text
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => ChatScreen(),
@@ -132,24 +134,37 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(fontSize: 32),
                   ),
                   const Spacer(),
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF2E7D32),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'S',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProfileScreen(name: widget.name
+                            ,email: widget.email!,),
+                          //HomeScreen(name: googleName),
+                        ),
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(24),
+                    child: Container(
+                      width: 48,
+                      height: 48,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF2E7D32),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'A',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
 
@@ -196,47 +211,54 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 32),
 
               // Vision input field
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xFF2E7D32), width: 2),
-                  borderRadius: BorderRadius.circular(16),
-                  color: Colors.white,
-                ),
-                child: TextField(
-                  controller: _visionController,
-                  maxLines: 4,
-                  decoration: InputDecoration(
-                    hintText: 'Describe your perfect trip...',
-                    hintStyle: TextStyle(
-                      color: Colors.grey[500],
-                      fontSize: 16,
-                    ),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(16),
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.only(bottom: 8, right: 8),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: Container(
-                          width: 36,
-                          height: 36,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF2E7D32),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.mic,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                        ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              border: Border.all(color: const Color(0xFF2E7D32), width: 2),
+              borderRadius: BorderRadius.circular(16),
+              color: Colors.white,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _visionController,
+                    minLines: 1,
+                    maxLines: 4, // expands naturally
+                    keyboardType: TextInputType.multiline,
+                    textInputAction: TextInputAction.newline,
+                    textAlignVertical: TextAlignVertical.center,
+                    decoration: InputDecoration(
+                      hintText: 'Describe your perfect trip...',
+                      hintStyle: TextStyle(
+                        color: Colors.grey[500],
+                        fontSize: 16,
                       ),
+                      border: InputBorder.none,
+                      isCollapsed: true, // removes extra padding
                     ),
                   ),
                 ),
-              ),
+                const SizedBox(width: 8),
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF2E7D32),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.mic,
+                    color: Colors.white,
+                    size: 22,
+                  ),
+                ),
+              ],
+            ),
+          ),
 
-              const SizedBox(height: 24),
+
+          const SizedBox(height: 24),
 
               // Create Itinerary Button
               Container(
